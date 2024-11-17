@@ -3,7 +3,7 @@
     <ThreeBackground />
     <div class="content">
       <!-- Your portfolio content -->
-      <h1>Welcome to My Portfolio</h1>
+      <h1 id="title">Welcome to My Portfolio</h1>
     </div>
   </div>
 </template>
@@ -18,7 +18,7 @@ export default defineComponent({
 });
 </script>
 
-<!-- <style>
+Portfolio <style>
 #app {
   width: 100vw;
   height: 100vh;
@@ -26,6 +26,15 @@ export default defineComponent({
   padding: 0;
   overflow: hidden;
   position: relative;
+}
+
+#title {
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  transform: translateY(-50%);
+  font-family: 'JetBrains Mono', monospace;
 }
 
 .content {
@@ -39,5 +48,5 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
 }
-</style> -->
+</style>
 

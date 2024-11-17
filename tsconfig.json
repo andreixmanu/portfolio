@@ -1,7 +1,7 @@
 
 {
   "compilerOptions": {
-    "types": ["three"],
+    "types": ["@vue/runtime-core"],
     "target": "esnext",
     "module": "esnext",
     "jsx": "preserve",
