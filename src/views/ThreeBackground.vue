@@ -24,15 +24,30 @@
   
         renderer.setSize(window.innerWidth, window.innerHeight);
         threeCanvas.value.appendChild(renderer.domElement);
+
+          // Add a light source
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // Soft white light
+        scene.add(ambientLight);
+
+        const pointLight = new THREE.PointLight(0xffffff, 1); // Bright white light
+        pointLight.position.set(10, 10, 10);
+        scene.add(pointLight);
   
         // Wireframe sphere
-        const geometry = new THREE.SphereGeometry(5, 32, 32);
-        const material = new THREE.MeshBasicMaterial({ color: 0x7A1CAC, wireframe: true }); // Set the sphere's color to a shade of purple
-        const wireframeSphere = new THREE.Mesh(geometry, material); // Create a mesh with the geometry and material
+        /*
+        * Colors:
+        * 0x7A1CAC - Purple
+        * 0xF2F2F2 - Silver
+        * 0xEBD3F8 - Light purple
+        */
+        const geometry = new THREE.SphereGeometry(6, 32, 32);
+        const wireframeGeometry = new THREE.WireframeGeometry(geometry); // Create a wireframe geometry from the sphere geometry
+        const material = new THREE.LineBasicMaterial({ color: 0xEBD3F8, linewidth: 100 }); // Set the sphere's color to a shade of purple
+        const wireframeSphere = new THREE.LineSegments(wireframeGeometry, material); // Create a mesh with the geometry and material
         scene.add(wireframeSphere);
   
-        camera.position.z = 6; // Set the camera's position to a distance of 8 units from the origin
-        camera.position.x = -6; // Move the camera to the right
+        camera.position.z = 7; // Set the camera's position to a distance of 8 units from the origin
+        camera.position.x = -8; // Move the camera to the left
         camera.position.y = 1; // Move the camera up
   
         // Animation loop
