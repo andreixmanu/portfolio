@@ -1,16 +1,25 @@
 {
   "name": "portfolio",
   "module": "index.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
   "type": "module",
   "devDependencies": {
     "@types/bun": "latest"
   },
   "peerDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.6.3"
   },
   "dependencies": {
+    "@types/node": "^22.9.0",
     "@vitejs/plugin-vue": "^5.2.0",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.15",
     "vite": "^5.4.11",
-    "vue": "^3.5.13"
+    "vue": "^3.5.13",
+    "vue-router": "^4.4.5"
   }
 }
