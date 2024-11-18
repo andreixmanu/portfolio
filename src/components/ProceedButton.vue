@@ -38,7 +38,7 @@ export default defineComponent({
   background-color: transparent;
   font-size: 25px;
   // margin: 70px 200px;
-  animation: glitch 5s 5s infinite;
+  animation: glitch 2.5s infinite;
 }
 
 .proceed-button::before {

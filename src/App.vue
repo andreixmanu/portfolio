@@ -3,22 +3,28 @@
     <ThreeBackground />
     <div class="content">
       <div class="text-container">
-        <AnimatedTitle text="Welcome to my portfolio" />
-        <ProceedButton text="Proceed" />
+        <AnimatedTitle text="Welcome to my Portfolio" @animation-complete="showButton = true" />
+        <transition name="fade">
+        <ProceedButton :class="{ 'fade-in': showButton }" text="Continue"  />
+        </transition>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import ThreeBackground from './views/ThreeBackground.vue';
 import AnimatedTitle from './components/AnimatedTitle.vue';
 import ProceedButton from './components/ProceedButton.vue';
 
 export default defineComponent({
   name: 'App',
-  components: { ThreeBackground, AnimatedTitle, ProceedButton }
+  components: { ThreeBackground, AnimatedTitle, ProceedButton },
+  setup() {
+      const showButton = ref(false);
+      return { showButton };
+  },
 });
 </script>
 
@@ -60,6 +66,12 @@ html, body {
 
 .proceed-button {
   align-items: center;
+  opacity: 0;
+  transition: opacity 2s ease-in-out;
+}
+
+.fade-in {
+  opacity: 1;
 }
 
 </style>
