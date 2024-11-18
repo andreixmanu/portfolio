@@ -24,14 +24,6 @@
   
         renderer.setSize(window.innerWidth, window.innerHeight);
         threeCanvas.value.appendChild(renderer.domElement);
-
-          // Add a light source
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // Soft white light
-        scene.add(ambientLight);
-
-        const pointLight = new THREE.PointLight(0xffffff, 1); // Bright white light
-        pointLight.position.set(10, 10, 10);
-        scene.add(pointLight);
   
         // Wireframe sphere
         /*
@@ -40,12 +32,15 @@
         * 0xF2F2F2 - Silver
         * 0xEBD3F8 - Light purple
         */
-        const geometry = new THREE.SphereGeometry(6, 32, 32);
-        const wireframeGeometry = new THREE.WireframeGeometry(geometry); // Create a wireframe geometry from the sphere geometry
-        const material = new THREE.LineBasicMaterial({ color: 0xEBD3F8, linewidth: 100 }); // Set the sphere's color to a shade of purple
-        const wireframeSphere = new THREE.LineSegments(wireframeGeometry, material); // Create a mesh with the geometry and material
+
+        // Wireframe geometry
+        const geometry = new THREE.SphereGeometry(6, 48, 48); // Create a sphere geometry
+        const wireframeGeometry = new THREE.WireframeGeometry(geometry);
+        const wireframeMaterial = new THREE.LineBasicMaterial({ color: 0x7c7c7c });
+        const wireframeSphere = new THREE.LineSegments(wireframeGeometry, wireframeMaterial);
         scene.add(wireframeSphere);
-  
+
+
         camera.position.z = 7; // Set the camera's position to a distance of 8 units from the origin
         camera.position.x = -8; // Move the camera to the left
         camera.position.y = 1; // Move the camera up
@@ -53,8 +48,8 @@
         // Animation loop
         function animate() {
           requestAnimationFrame(animate);
-          wireframeSphere.rotation.x += 0.0005;  // Rotate the sphere around the X-axis
-          wireframeSphere.rotation.y += 0.001; // Rotate the sphere around the Y-axis
+          wireframeSphere.rotation.x += 0.0005; // Rotate the wireframe sphere around the X-axis
+          wireframeSphere.rotation.y += 0.001; // Rotate the wireframe sphere around the Y-axis
           renderer.render(scene, camera);
         }
         animate();

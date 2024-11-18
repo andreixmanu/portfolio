@@ -10,7 +10,8 @@
   "devDependencies": {
     "@types/bun": "latest",
     "@types/three": "^0.170.0",
-    "@types/vue": "^1.0.31"
+    "@types/vue": "^1.0.31",
+    "sass-embedded": "^1.81.0"
   },
   "peerDependencies": {
     "typescript": "^5.6.3"
