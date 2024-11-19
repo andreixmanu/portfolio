@@ -1,8 +1,5 @@
 <template>
-  <button
-    class="proceed-button"
-    @click="proceed"
-  >
+  <button class="proceed-button" @click="handleContinue">
     {{ buttonText }}
   </button>
 </template>
@@ -18,10 +15,12 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props) {
-    const proceed = ref<() => void>(() => {});
+  setup(props, {emit}) {
     const buttonText = ref(props.text);
-    return { proceed, buttonText };
+    const handleContinue = () => {
+      emit('handleContinue');
+    };
+    return { buttonText, handleContinue };
   }
 });
 </script>
@@ -35,6 +34,7 @@ export default defineComponent({
   font-family: 'JetBrains Mono', monospace;
   border-left: none;
   border-right: none;
+  //border: none;
   background-color: transparent;
   font-size: 25px;
   // margin: 70px 200px;

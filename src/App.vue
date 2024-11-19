@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <ThreeBackground />
+    <ThreeBackground ref="background" />
     <div class="content">
       <div class="text-container">
         <AnimatedTitle text="Welcome to my Portfolio" @animation-complete="showButton = true" />
         <transition name="fade">
-        <ProceedButton :class="{ 'fade-in': showButton }" text="Continue"  />
+        <ProceedButton :class="{ 'fade-in': showButton }" text="Continue" @handleContinue="handleContinue"  />
         </transition>
       </div>
     </div>
@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import ThreeBackground from './views/ThreeBackground.vue';
+import ThreeBackground from './views/Background.vue';
 import AnimatedTitle from './components/AnimatedTitle.vue';
 import ProceedButton from './components/ProceedButton.vue';
 
@@ -23,7 +23,17 @@ export default defineComponent({
   components: { ThreeBackground, AnimatedTitle, ProceedButton },
   setup() {
       const showButton = ref(false);
-      return { showButton };
+      const showComponents = ref(false);
+      const background = ref(null);
+
+      const handleContinue = () => {
+        showComponents.value = true;
+
+        const backgroundInstance = background.value as any;
+        console.assert(backgroundInstance);
+        backgroundInstance.moveSphere();
+      }
+    return { showButton, showComponents, handleContinue, background };
   },
 });
 </script>

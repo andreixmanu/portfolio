@@ -62,7 +62,7 @@ export default defineComponent({
   position: relative;
   font-size: 45px;
   font-family: 'JetBrains Mono', monospace;
-  font-weight: 300;
+  font-weight: 350;
 }
 
 #cursor {
