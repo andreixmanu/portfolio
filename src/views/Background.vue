@@ -8,7 +8,7 @@
 
   export default defineComponent({
     name: 'Background',
-    setup() {
+    setup( props, { emit }) {
       const threeCanvas = ref<HTMLDivElement | null>(null);
       let sphere: any;
 

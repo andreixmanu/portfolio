@@ -2,12 +2,15 @@
   <div id="app">
     <ThreeBackground ref="background" />
     <div class="content">
-      <div class="text-container">
-        <AnimatedTitle text="Welcome to my Portfolio" @animation-complete="showButton = true" />
-        <transition name="fade">
-        <ProceedButton :class="{ 'fade-in': showButton }" text="Continue" @handleContinue="handleContinue"  />
-        </transition>
+      <transition name="fade">
+        <div class="text-container"
+          v-if="showComponents">
+            <AnimatedTitle text="Welcome to my Portfolio" @animation-complete="showButton = true" />
+            <transition name="fade">
+              <ProceedButton :class="{ 'fade-in': showButton }" text="Continue" @handleContinue="handleContinue"  />
+            </transition>
       </div>
+      </Transition>
     </div>
   </div>
 </template>
@@ -23,11 +26,11 @@ export default defineComponent({
   components: { ThreeBackground, AnimatedTitle, ProceedButton },
   setup() {
       const showButton = ref(false);
-      const showComponents = ref(false);
+      const showComponents = ref(true);
       const background = ref(null);
 
       const handleContinue = () => {
-        showComponents.value = true;
+        showComponents.value = false;
 
         const backgroundInstance = background.value as any;
         console.assert(backgroundInstance);
@@ -72,6 +75,7 @@ html, body {
 .text-container {
   flex-direction: column; /* Align items to the left */
   margin-left: 10%;
+  transition: opacity 2s ease-out;
 }
 
 .proceed-button {
@@ -82,6 +86,14 @@ html, body {
 
 .fade-in {
   opacity: 1;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 1s;
+}
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
 }
 
 </style>
