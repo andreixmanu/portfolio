@@ -3,47 +3,66 @@
     <ThreeBackground ref="background" />
     <div class="content">
       <transition name="fade">
-        <div class="text-container"
-          v-if="showComponents">
-            <AnimatedTitle text="Welcome to my Portfolio" @animation-complete="showButton = true" />
-            <transition name="fade">
-              <ProceedButton :class="{ 'fade-in': showButton }" text="Continue" @handleContinue="handleContinue"  />
-            </transition>
-      </div>
+        <div class="text-container" v-if="showComponents">
+          <AnimatedTitle
+            text="Welcome to my Portfolio"
+            @animation-complete="showButton = true"
+          />
+          <transition name="fade">
+            <ProceedButton
+              :class="{ 'fade-in': showButton }"
+              text="Continue"
+              @handleContinue="handleContinue"
+            />
+          </transition>
+        </div>
+      </transition>
+      <Transition name="fade">
+        <div class="minigame-container" v-if="showMinigame">
+          <Minigame />
+        </div>
       </Transition>
     </div>
   </div>
 </template>
 
+
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
-import ThreeBackground from './views/Background.vue';
-import AnimatedTitle from './components/AnimatedTitle.vue';
-import ProceedButton from './components/ProceedButton.vue';
+import { defineComponent, ref } from "vue";
+import ThreeBackground from "./views/Background.vue";
+import AnimatedTitle from "./components/AnimatedTitle.vue";
+import ProceedButton from "./components/ProceedButton.vue";
+import Minigame from "./components/Minigame.vue";
 
 export default defineComponent({
-  name: 'App',
-  components: { ThreeBackground, AnimatedTitle, ProceedButton },
+  name: "App",
+  components: { ThreeBackground, AnimatedTitle, ProceedButton, Minigame },
   setup() {
-      const showButton = ref(false);
-      const showComponents = ref(true);
-      const background = ref(null);
+    const showButton = ref(false);
+    const showComponents = ref(true);
+    const showMinigame = ref(false);
+    const background = ref(null);
 
-      const handleContinue = () => {
-        showComponents.value = false;
+    const handleContinue = () => {
+      showComponents.value = false;
+      
+      setTimeout(() => {
+        showMinigame.value = true;
+      }, 2000); // Delay before showing the minigame
 
-        const backgroundInstance = background.value as any;
-        console.assert(backgroundInstance);
-        backgroundInstance.moveSphere();
-      }
-    return { showButton, showComponents, handleContinue, background };
+      const backgroundInstance = background.value as any;
+      console.assert(backgroundInstance);
+      backgroundInstance.moveSphere();
+    };
+
+    return { showButton, showComponents, showMinigame, handleContinue, background };
   },
 });
 </script>
 
-Portfolio <style>
-
-html, body {
+<style>
+html,
+body {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -88,13 +107,29 @@ html, body {
   opacity: 1;
 }
 
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 1s;
 }
 
-.fade-enter-from, .fade-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
 
+.minigame-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+#minigame {
+  width: 500px;
+  height: 500px;
+  padding: 20px;
+}
 </style>
+
 

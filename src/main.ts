@@ -1,5 +1,14 @@
-import App from './App.vue';
-import './main.css';
-import { createApp } from 'vue';
+import "./main.css";
+import { createApp } from "vue";
+import App from "./App.vue";
 
-createApp(App).mount('#app');
+async function startApp() {
+  try {
+    const app = createApp(App);
+    app.mount("#app");
+  } catch (error) {
+    console.error("Failed to initialize Wasm module:", error);
+  }
+}
+
+startApp();
