@@ -1,7 +1,7 @@
 <template>
   <div id="minigame-container">
     <h1 class="text" id="title">Decrypt the Caesar Cipher</h1>
-    <p class="text" id="message" >{{ encryptedMessage }}</p>
+    <p class="text" id="message">{{ isCorrect ? decryptedMessage : encryptedMessage }}</p>
     <div class="number-input">
       <button @click="decrementKey" class="number-button">-</button>
       <input
@@ -14,11 +14,6 @@
     <button @click="decryptMessage" class="decrypt-button">Decrypt</button>
     <template v-if="error">
       <p class="text" style="color: red">{{ error }}</p>
-    </template>
-    <template v-if="isCorrect">
-      <p class="text">Congratulations! You've cracked the cipher!</p>
-      <p class="text">Decrypted Message:</p>
-      <p class="text">{{ decryptedMessage }}</p>
     </template>
   </div>
 </template>
@@ -115,7 +110,7 @@ export default {
 }
 
 #message {
-  background-color: rgba(20, 20, 20, 0.99);
+  background-color: rgba(20, 20, 20, 0.9);
   width: 300px;
   display: inline-block;
   margin-top: 30px;
@@ -171,16 +166,16 @@ export default {
 
 .decrypt-button {
   margin: 10px auto;
-  width: 200px;
+  width: 300px;
   display: block;
   padding: 15px;
   font-size: 1.2em;
   font-family: 'JetBrains Mono', monospace;
   cursor: pointer;
-  background-color: rgba(150, 150, 150, 0.8);
+  background-color: rgba(20, 20, 20, 0.9);
   color: white;
-  border: none;
   border-radius: 5px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
 }
 
 </style>
