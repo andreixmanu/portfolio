@@ -1,12 +1,10 @@
 <template>
   <div id="minigame-container">
-    <h1 class="text">Decrypt the Message</h1>
-    <p class="text">Encrypted Message:</p>
+    <h1 class="text" id="title">Decrypt the Caesar Cipher</h1>
     <p class="text">{{ encryptedMessage }}</p>
     <input
       v-model.number="key"
-      type="number"
-      placeholder="Enter decryption key"
+      placeholder="Enter a number"
     />
     <button @click="decryptMessage">Decrypt</button>
     <template v-if="error">
@@ -75,20 +73,60 @@ export default {
 </script>
 
 <style scoped>
+#minigame-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-height: 500px;
+  width: max-content;
+}
+
+.error-message {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+}
 
 .text {
   font-size: 2em;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 350;
+  margin: 20px;
+  text-align: center;
+  color: white;
+}
+
+#title{
+  font-size: 4em;
   margin: 20px;
   text-align: center;
   color: white;
 }
 
 input {
-  margin: 10px auto;
-  padding: 5px;
-  font-size: 1em;
-  border-color: white;
+  margin: 20px auto;
+  padding: 12px 20px;
+  font-size: 1.2em;
+  width: 200px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  background-color: rgba(50, 50, 50, 0.8);
+  color: white;
   display: block;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+input:focus {
+  outline: none;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
 }
 
 button {
@@ -96,13 +134,12 @@ button {
   display: block;
   padding: 5px 10px;
   font-size: 1em;
+  font-family: 'JetBrains Mono', monospace;
   cursor: pointer;
-  background-color: #007bff;
+  background-color: rgba(150, 150, 150, 0.8);
   color: white;
-  border: none;
-  border-radius: 3px;
+  border: black;
+  border-radius: 5px;
 }
-button:hover {
-  background-color: #0056b3;
-}
+
 </style>
