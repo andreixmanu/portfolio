@@ -1,12 +1,17 @@
 <template>
   <div id="minigame-container">
     <h1 class="text" id="title">Decrypt the Caesar Cipher</h1>
-    <p class="text">{{ encryptedMessage }}</p>
-    <input
-      v-model.number="key"
-      placeholder="Enter a number"
-    />
-    <button @click="decryptMessage">Decrypt</button>
+    <p class="text" id="message" >{{ encryptedMessage }}</p>
+    <div class="number-input">
+      <button @click="decrementKey" class="number-button">-</button>
+      <input
+        v-model.number="key"
+        readonly
+        class="number-display"
+      />
+      <button @click="incrementKey" class="number-button">+</button>
+    </div>
+    <button @click="decryptMessage" class="decrypt-button">Decrypt</button>
     <template v-if="error">
       <p class="text" style="color: red">{{ error }}</p>
     </template>
@@ -26,7 +31,7 @@ export default {
   name: "Decryptor",
   setup() {
     const encryptedMessage = ref("Khoor Zruog");
-    const key = ref<number>(1);
+    const key = ref<number>(0);
     const decryptedMessage = ref<string>("");
     const isCorrect = ref(false);
     const error = ref("");
@@ -35,15 +40,16 @@ export default {
       await init();
     });
 
-    const decryptMessage = () => {
-      if (key.value === null) {
-        error.value = "Please enter a valid decryption key.";
-        isCorrect.value = false;
-        return;
-      }
+    const incrementKey = () => {
+      key.value = (key.value + 1) % 26;
+    };
 
+    const decrementKey = () => {
+      key.value = (key.value - 1 + 26) % 26;
+    };
+
+    const decryptMessage = () => {
       try {
-        // Get both the decrypted message and whether it's correct
         const result = decrypt_caesar_cipher(encryptedMessage.value, key.value);
         decryptedMessage.value = result.message;
         isCorrect.value = result.is_correct;
@@ -67,6 +73,8 @@ export default {
       decryptMessage,
       isCorrect,
       error,
+      incrementKey,
+      decrementKey,
     };
   },
 };
@@ -106,39 +114,72 @@ export default {
   color: white;
 }
 
-input {
-  margin: 20px auto;
-  padding: 12px 20px;
-  font-size: 1.2em;
-  width: 200px;
-  border: 2px solid rgba(255, 255, 255, 0.5);
+#message {
+  background-color: rgba(20, 20, 20, 0.99);
+  width: 300px;
+  display: inline-block;
+  margin-top: 30px;
+  margin-bottom: 5px;
   border-radius: 5px;
+  padding: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.number-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px auto;
+  gap: 10px;
+  height: 50px;
+}
+
+.number-button {
+  width: 50px;
+  height: 50px;
+  font-size: 1.5em;
   background-color: rgba(50, 50, 50, 0.8);
   color: white;
-  display: block;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(200, 200, 200, 0.8);
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.number-button:hover {
+  background-color: rgba(200, 200, 200, 0.8);
+}
+
+.number-display {
+  width: 100px;
+  height: 50px;
   text-align: center;
-  transition: all 0.3s ease;
+  background-color: rgba(50, 50, 50, 0.8);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  font-size: 1.5em;
+  padding: 0;
+  line-height: 50px;
+  box-sizing: border-box;
 }
 
-input:focus {
-  outline: none;
-  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
-}
-
-input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-button {
+.decrypt-button {
   margin: 10px auto;
+  width: 200px;
   display: block;
-  padding: 5px 10px;
-  font-size: 1em;
+  padding: 15px;
+  font-size: 1.2em;
   font-family: 'JetBrains Mono', monospace;
   cursor: pointer;
   background-color: rgba(150, 150, 150, 0.8);
   color: white;
-  border: black;
+  border: none;
   border-radius: 5px;
 }
 
