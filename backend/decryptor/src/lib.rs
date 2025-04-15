@@ -35,7 +35,7 @@ pub fn decrypt_caesar_cipher(encrypted: &str, key: u8) -> DecryptionResult {
         .collect();
     
     let is_correct = decrypted.contains("Hello World");
-
+    
     DecryptionResult {
         message: decrypted,
         is_correct,
