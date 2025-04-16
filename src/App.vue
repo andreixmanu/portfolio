@@ -19,7 +19,12 @@
       </transition>
       <Transition name="fade">
         <div class="minigame-container" v-if="showMinigame">
-          <Minigame />
+          <Minigame @cracked="cracked" />
+        </div>
+      </Transition>
+      <Transition name="fade">
+        <div id="portfolio">
+          <Portfolio v-if="isCracked" />
         </div>
       </Transition>
     </div>
@@ -33,14 +38,16 @@ import ThreeBackground from "./views/Background.vue";
 import AnimatedTitle from "./components/AnimatedTitle.vue";
 import ProceedButton from "./components/ProceedButton.vue";
 import Minigame from "./components/Minigame.vue";
+import Portfolio from "./components/Portfolio.vue";
 
 export default defineComponent({
   name: "App",
-  components: { ThreeBackground, AnimatedTitle, ProceedButton, Minigame },
+  components: { ThreeBackground, AnimatedTitle, ProceedButton, Minigame, Portfolio },
   setup() {
     const showButton = ref(false);
     const showComponents = ref(true);
     const showMinigame = ref(false);
+    const isCracked = ref(false);
     const background = ref(null);
 
     const handleContinue = () => {
@@ -55,7 +62,12 @@ export default defineComponent({
       backgroundInstance.moveSphere();
     };
 
-    return { showButton, showComponents, showMinigame, handleContinue, background };
+    const cracked = () => {
+      showMinigame.value = false;
+      isCracked.value = true;
+    };
+
+    return { showButton, showComponents, showMinigame, handleContinue, background, cracked, isCracked };
   },
 });
 </script>

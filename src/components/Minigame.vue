@@ -24,24 +24,17 @@ import init, { decrypt_caesar_cipher } from "../../backend/decryptor/pkg";
 
 export default {
   name: "Decryptor",
-  setup() {
+  setup(props, { emit }) {
     const encryptedMessage = ref("Khoor Zruog");
     const key = ref<number>(0);
     const decryptedMessage = ref<string>("");
     const isCorrect = ref(false);
     const error = ref("");
 
-    onMounted(async () => {
-      await init();
-    });
+    onMounted(async () => { await init(); });
 
-    const incrementKey = () => {
-      key.value = (key.value + 1) % 26;
-    };
-
-    const decrementKey = () => {
-      key.value = (key.value - 1 + 26) % 26;
-    };
+    const incrementKey = () => { key.value = (key.value + 1) % 26; };
+    const decrementKey = () => { key.value = (key.value - 1 + 26) % 26; };
 
     const decryptMessage = () => {
       try {
@@ -49,17 +42,16 @@ export default {
         decryptedMessage.value = result.message;
         isCorrect.value = result.is_correct;
         
-        if (!result.is_correct) {
-          error.value = "That's not the right key. Try again!";
-        } else {
-          error.value = "";
-        }
+        if (result.is_correct) { emit("cracked"); }
+        else { error.value = "That's not the right key. Try again!"; }
+      
       } catch (e) {
         error.value = "An error occurred while decrypting.";
         isCorrect.value = false;
         decryptedMessage.value = "";
       }
     };
+
 
     return {
       encryptedMessage,
