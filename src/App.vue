@@ -93,7 +93,7 @@ body {
 
 .content {
   position: relative;
-  z-index: 1; /* Ensures it stays above Three.js canvas */
+  z-index: 1;
   color: white;
   text-align: center;
   width: 100%;
@@ -104,7 +104,7 @@ body {
 }
 
 .text-container {
-  flex-direction: column; /* Align items to the left */
+  flex-direction: column;
   margin-left: 10%;
   transition: opacity 2s ease-out;
 }
@@ -142,6 +142,15 @@ body {
   height: 500px;
   padding: 20px;
 }
+
+#portfolio {
+  color: white;
+  animation: fadeIn 2s ease-in;
+  padding: 2rem;
+  max-width: max-content;
+  margin: 0 auto;
+}
+
 </style>
 
 
