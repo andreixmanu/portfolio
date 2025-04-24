@@ -27,6 +27,8 @@
               <i class="fab fa-youtube"></i>
             </a>
           </div>
+          <p id="long-desc">I am currently looking for internships or job opportunities in the field of cybersecurity, 
+            programming, or low level programming. If you are interested in collaborating with me, feel free to reach out!</p>
           <a href="mailto:andreixmanu@proton.me" class="mail">Contact me via email</a>
         </div>
         <div class="portfolio-content">
@@ -181,7 +183,7 @@ li:hover {
 }
 
 .tech-note {
-  margin-top: 2rem;
+  margin-top: 3rem;
   padding: 1rem;
   background: rgba(255, 99, 71, 0.1);
   border-radius: 8px;
@@ -282,7 +284,6 @@ li:hover {
 .mail{
   display: inline-block;
   font-size: large;
-  margin-top: 1rem;
   padding: 0.5rem 1rem;
   color: white;
   text-decoration: none;

@@ -1,57 +1,34 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import wasm from "vite-plugin-wasm";
-import topLevelAwait from "vite-plugin-top-level-await";
-import { resolve } from 'path';
 
+// https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [
-        vue(),
-        wasm(),
-        topLevelAwait()
-    ],
-    base: './',
-    publicDir: 'public',
-    assetsInclude: ['**/*.wasm'],
-    define: {
-        __VUE_OPTIONS_API__: true,
-        __VUE_PROD_DEVTOOLS__: false,
-        __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false,
-    },
+    base: '/portfolio/',
+
+    plugins: [vue(), wasm()],
     build: {
-        target: "esnext",
         rollupOptions: {
-            input: {
-                main: resolve(__dirname, 'index.html')
-            },
-            output: {
-                assetFileNames: (assetInfo) => {
-                    if (assetInfo.name && assetInfo.name.endsWith('.wasm')) {
-                        return 'assets/[name][extname]';
-                    }
-                    return 'assets/[name]-[hash][extname]';
-                }
-            }
-        }
-    },
-    optimizeDeps: {
-        exclude: ['**/decryptor_bg.wasm']
-    },
-    server: {
-        port: 4200,
-        fs: {
-            strict: false,
-            allow: ['.', '..']
+            // Specifica i file esterni che non devono essere inclusi nel bundle
+            // Potrebbe non essere necessario con vite-plugin-wasm, valuta se serve ancora
+            external: ["backend/decryptor/pkg/decryptor_bg.wasm"],
         },
-        headers: {
-            "Cross-Origin-Opener-Policy": "same-origin",
-            "Cross-Origin-Embedder-Policy": "require-corp"
-        }
+        target: "esnext", // Necessario per supportare i moduli WASM
     },
     resolve: {
         alias: {
-            '@': resolve(__dirname, './src'),
-        }
+            "@": "/src", // Alias per semplificare le importazioni
+        },
     },
-
+    server: {
+        port: 4200, // Specifica la porta
+        // Forza il tipo MIME corretto per i file .wasm
+        fs: {
+            strict: false, // Consenti percorsi esterni alla root (utile in dev)
+        },
+    },
+    optimizeDeps: {
+        // Escludi i file WASM dall'ottimizzazione
+        exclude: ["backend/decryptor/pkg/decryptor_bg.wasm"],
+    },
 });

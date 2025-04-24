@@ -23,9 +23,7 @@
         </div>
       </Transition>
       <Transition name="fade">
-        <div id="portfolio">
-          <Portfolio v-if="isCracked" />
-        </div>
+        <Portfolio v-if="isCracked" />
       </Transition>
     </div>
   </div>
@@ -64,7 +62,9 @@ export default defineComponent({
 
     const cracked = () => {
       showMinigame.value = false;
-      isCracked.value = true;
+      setTimeout(() => {
+        isCracked.value = true;
+      }, 2000); // Add 2 second delay before showing portfolio
     };
 
     return { showButton, showComponents, showMinigame, handleContinue, background, cracked, isCracked };
@@ -121,12 +121,17 @@ body {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 1s;
+  transition: opacity 2s ease;
 }
 
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
 }
 
 .minigame-container {
