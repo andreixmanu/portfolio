@@ -3,7 +3,7 @@
     "module": "index.ts",
     "scripts": {
         "dev": "vite",
-        "build": "tsc",
+        "build": "bun build src/main.ts --outdir=dist",
         "start": "node dist/main.js"
     },
     "type": "module",
@@ -11,7 +11,8 @@
         "@types/bun": "latest",
         "@types/three": "^0.170.0",
         "@types/vue": "^1.0.31",
-        "sass-embedded": "^1.81.0"
+        "sass-embedded": "^1.81.0",
+        "vite-plugin-top-level-await": "^1.5.0"
     },
     "peerDependencies": {
         "typescript": "^5.6.3"

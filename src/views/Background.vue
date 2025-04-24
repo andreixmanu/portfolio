@@ -4,13 +4,14 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
-import * as THREE from "three";
+import type * as THREE from "three";
 
 export default defineComponent({
   name: "Background",
   setup(props, { emit }) {
     const threeCanvas = ref<HTMLDivElement | null>(null);
     let sphere: any;
+    let THREE: typeof import("three") | null = null;
 
     // Variables for animation
     let isMoving = false;
@@ -28,9 +29,12 @@ export default defineComponent({
       return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
     };
 
-    const createSphere = () => {
+    const createSphere = async () => {
       if (!threeCanvas.value) return;
 
+      // Dynamically import Three.js only in browser environment
+      THREE = await import('three');
+      
       // Scene setup
       const scene = new THREE.Scene(); // Create a new scene
       scene.background = new THREE.Color(0x000000); // Set the background color to black (default)
@@ -96,11 +100,13 @@ export default defineComponent({
       animate(performance.now());
 
       // Handle resizing
-      window.addEventListener("resize", () => {
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-      });
+      if (typeof window !== 'undefined') {
+        window.addEventListener("resize", () => {
+          renderer.setSize(window.innerWidth, window.innerHeight);
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+        });
+      }
 
       return wireframeSphere;
     };
@@ -112,9 +118,17 @@ export default defineComponent({
       }
     };
 
-    onMounted(() => {
-      sphere = createSphere();
-      if (!sphere) throw new Error("createSphere returned null");
+    onMounted(async () => {
+      if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+        try {
+          sphere = await createSphere();
+          if (!sphere) {
+            console.warn("createSphere returned null");
+          }
+        } catch (error) {
+          console.error("Failed to initialize Three.js:", error);
+        }
+      }
     });
 
     return { threeCanvas, moveSphere };

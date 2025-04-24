@@ -11,7 +11,9 @@
       />
       <button @click="incrementKey" class="number-button">+</button>
     </div>
-    <button @click="decryptMessage" class="decrypt-button">Decrypt</button>
+    <button @click="decryptMessage" :disabled="!isInitialized" class="decrypt-button">
+      {{ isInitialized ? 'Decrypt' : 'Loading...' }}
+    </button>
     <template v-if="error">
       <p class="text" style="color: red">{{ error }}</p>
     </template>
@@ -20,7 +22,11 @@
 
 <script lang="ts">
 import { ref, onMounted } from "vue";
-import init, { decrypt_caesar_cipher } from "../../backend/decryptor/pkg";
+
+// Type for our WASM module
+type WasmModule = {
+  decrypt_caesar_cipher: (message: string, key: number) => { message: string; is_correct: boolean };
+};
 
 export default {
   name: "Decryptor",
@@ -30,28 +36,79 @@ export default {
     const decryptedMessage = ref<string>("");
     const isCorrect = ref(false);
     const error = ref("");
+    const isInitialized = ref(false);
+    
+    let wasmModule: WasmModule | null = null;
 
-    onMounted(async () => { await init(); });
+    const initializeWasm = async () => {
+      try {
+        console.log("Starting WASM initialization...");
+        
+        // Dynamic import of the module
+        const module = await import("../../backend/decryptor/pkg/decryptor");
+        console.log("JS module imported successfully");
 
-    const incrementKey = () => { key.value = (key.value + 1) % 26; };
-    const decrementKey = () => { key.value = (key.value - 1 + 26) % 26; };
+        // Initialize WASM
+        await module.default();
+        console.log("WASM module initialized successfully");
+        
+        // Store module reference
+        wasmModule = module;
+        isInitialized.value = true;
+      } catch (e) {
+        console.error("WASM initialization error:", e);
+        console.error("Error stack:", e.stack);
+        error.value = `Failed to initialize decryption module: ${e.message}`;
+        isInitialized.value = false;
+      }
+    };
+
+    onMounted(() => {
+      // Only initialize in browser environment
+      if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+        initializeWasm().catch(e => {
+          console.error("Failed to initialize WASM:", e);
+          error.value = "Failed to initialize decryption module.";
+        });
+      } else {
+        console.log("Skipping WASM initialization in non-browser environment");
+      }
+    });
+
+    const incrementKey = () => { 
+      key.value = (key.value + 1) % 26; 
+    };
+    
+    const decrementKey = () => { 
+      key.value = (key.value - 1 + 26) % 26; 
+    };
 
     const decryptMessage = () => {
+      if (!wasmModule) {
+        error.value = "Decryption module not ready.";
+        return;
+      }
+
       try {
-        const result = decrypt_caesar_cipher(encryptedMessage.value, key.value);
+        console.log("Attempting decryption with key:", key.value);
+        const result = wasmModule.decrypt_caesar_cipher(encryptedMessage.value, key.value);
+        console.log("Decryption result:", result);
+        
         decryptedMessage.value = result.message;
         isCorrect.value = result.is_correct;
         
-        if (result.is_correct) { emit("cracked"); }
-        else { error.value = "That's not the right key. Try again!"; }
-      
+        if (result.is_correct) {
+          emit("cracked");
+        } else {
+          error.value = "That's not the right key. Try again!";
+        }
       } catch (e) {
-        error.value = "An error occurred while decrypting.";
+        console.error("Decryption error:", e);
+        error.value = `An error occurred while decrypting: ${e.message}`;
         isCorrect.value = false;
         decryptedMessage.value = "";
       }
     };
-
 
     return {
       encryptedMessage,
@@ -62,6 +119,7 @@ export default {
       error,
       incrementKey,
       decrementKey,
+      isInitialized,
     };
   },
 };
@@ -168,6 +226,11 @@ export default {
   color: white;
   border-radius: 5px;
   border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.decrypt-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 </style>
