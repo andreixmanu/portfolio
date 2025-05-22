@@ -1,7 +1,7 @@
 <template>
   <div id="minigame-container">
     <h1 class="text" id="title">Decrypt the Caesar Cipher</h1>
-    <p class="text" id="message">{{ isCorrect ? decryptedMessage : encryptedMessage }}</p>
+    <p class="text" id="message">{{ isCorrect ? decryptedMessage : currentDecryptedText }}</p>
     <div class="number-input">
       <button @click="decrementKey" class="number-button">-</button>
       <input
@@ -55,6 +55,9 @@ export default {
         // Store module reference
         wasmModule = module;
         isInitialized.value = true;
+        
+        // Initialize the current decrypted text
+        updateCurrentDecryption();
       } catch (e: unknown) {
         if (e instanceof Error) {
           console.error("WASM initialization error:", e);
@@ -79,12 +82,28 @@ export default {
       }
     });
 
+    const currentDecryptedText = ref(encryptedMessage.value);
+    
+    // Function to decrypt the message with the current key without checking if it's correct
+    const updateCurrentDecryption = () => {
+      if (!wasmModule) return;
+      
+      try {
+        const result = wasmModule.decrypt_caesar_cipher(encryptedMessage.value, key.value);
+        currentDecryptedText.value = result.message;
+      } catch (e) {
+        console.error("Live decryption error:", e);
+      }
+    };
+    
     const incrementKey = () => { 
-      key.value = (key.value + 1) % 26; 
+      key.value = (key.value + 1) % 26;
+      updateCurrentDecryption();
     };
     
     const decrementKey = () => { 
-      key.value = (key.value - 1 + 26) % 26; 
+      key.value = (key.value - 1 + 26) % 26;
+      updateCurrentDecryption(); 
     };
 
     const decryptMessage = () => {
@@ -128,6 +147,7 @@ export default {
       incrementKey,
       decrementKey,
       isInitialized,
+      currentDecryptedText,
     };
   },
 };
