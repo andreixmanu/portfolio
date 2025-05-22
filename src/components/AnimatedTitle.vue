@@ -1,8 +1,8 @@
-
 <template>
   <div id="title-container">
-    <h1 id="title" ref="title"></h1>
-    <span id="cursor" ref="cursor"></span>
+    <h1 id="title">
+      <span>{{ displayedText }}</span><span v-if="showCursor" class="blinking-cursor">|</span>
+    </h1>
   </div>
 </template>
 
@@ -17,40 +17,37 @@ export default defineComponent({
       required: true
     }
   },
-
   setup(props, { emit }) {
-    const title = ref<HTMLElement | null>(null);
-    const cursor = ref<HTMLElement | null>(null);
+    const displayedText = ref('');
+    const showCursor = ref(true);
 
     onMounted(() => {
-      if (!title.value || !cursor.value) return;
+      let index = 0;
+      const text = props.text;
 
-    // Typewriter effect
-    let index = 0;
-    const text = props.text;
-    title.value.textContent = '';
-
-    function typeWriter() {
-      if (index < text.length) {
-        if (title.value) {
-          title.value.textContent += text.charAt(index);
+      function typeWriter() {
+        if (index < text.length) {
+          displayedText.value += text.charAt(index);
           index++;
-          setTimeout(typeWriter, 80); // Adjust the speed of the typewriter effect
-        }
-      } else {
+          setTimeout(typeWriter, 80);
+        } else {
           emit('animation-complete');
         }
       }
       typeWriter();
+
+      // Blinking cursor interval
+      setInterval(() => {
+        showCursor.value = !showCursor.value;
+      }, 500);
     });
-    
-    return { title, cursor };
+
+    return { displayedText, showCursor };
   }
 });
 </script>
 
 <style scoped>
-
 #title-container {
   display: flex;
   align-items: center;
@@ -58,27 +55,49 @@ export default defineComponent({
 }
 
 #title {
-  color: 0x7c7c7c;
+  color: whitesmoke;
   position: relative;
-  font-size: 45px;
+  font-size: 7vw; /* Responsive font size based on viewport width */
   font-family: 'JetBrains Mono', monospace;
   font-weight: 350;
 }
 
-#cursor {
-width: 10px;
-height: 45px;
-background-color: white;
-margin-left: 5px;
-animation: blink 1s step-end infinite;
+.blinking-cursor {
+  display: inline-block;
+  width: 10px;
+  animation: blink 1s step-end infinite;
 }
 
 @keyframes blink {
-from, to {
-  opacity: 1;
+  from, to {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
-50% {
-  opacity: 0;
+
+@media (max-width: 600px) {
+  #title-container {
+    justify-content: flex-start;
+    text-align: left;
+    margin-left: 5vw;
+  }
+  #title {
+    text-align: left;
+    font-size: 9vw;
+  }
+  .blinking-cursor {
+    height: 8vw;
+  }
 }
+
+@media (min-width: 1200px) {
+  #title {
+    font-size: 60px;
+  }
+  .blinking-cursor {
+    height: 45px;
+  }
 }
 </style>

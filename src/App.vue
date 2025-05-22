@@ -8,13 +8,11 @@
             text="Welcome to my Portfolio"
             @animation-complete="showButton = true"
           />
-          <transition name="fade">
-            <ProceedButton
-              :class="{ 'fade-in': showButton }"
-              text="Continue"
-              @handleContinue="handleContinue"
-            />
-          </transition>
+          <ProceedButton
+            :class="{ 'fade-in': showButton }"
+            text="Continue"
+            @handleContinue="handleContinue"
+          />
         </div>
       </transition>
       <Transition name="fade">
@@ -104,15 +102,30 @@ body {
 }
 
 .text-container {
+  position: relative;
+  display: flex;
   flex-direction: column;
   margin-left: 10%;
   transition: opacity 2s ease-out;
 }
 
 .proceed-button {
-  align-items: center;
+  display: block;
+  position: absolute;
+  left: 30%;
+  top: 55%;
+  width: fit-content;
+  text-align: center;
+  will-change: opacity;
   opacity: 0;
   transition: opacity 2s ease-in-out;
+}
+
+@media (max-width: 600px) {
+  .proceed-button {
+    left: 15%;
+    top: 65%;
+  }
 }
 
 .fade-in {

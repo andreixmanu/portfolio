@@ -1,5 +1,5 @@
 <template>
-    <button class="proceed-button" @click="handleContinue">
+    <button class="proceed-button" @click="handleContinue" :data-text="buttonText">
         {{ buttonText }}
     </button>
 </template>
@@ -29,40 +29,31 @@ export default defineComponent({
 @use "sass:math";
 
 .proceed-button {
-    color: grey;
-    position: relative;
+    color: #7c7c7c;
+    position: fixed;
     font-family: "JetBrains Mono", monospace;
     border-left: none;
     border-right: none;
-    //border: none;
     background-color: transparent;
-    font-size: 25px;
-    // margin: 70px 200px;
+    font-size: 30px;
+    margin-top: 10px;
     animation: glitch 2.5s infinite;
 }
 
-.proceed-button::before {
-    content: attr(data-text);
-    position: absolute;
-    left: -2px;
-    text-shadow: -5px 0 magenta;
-    overflow: hidden;
-    top: 0;
-    animation:
-        noise-1 3s linear infinite alternate-reverse,
-        glitch 5s 5.05s infinite;
+@media (max-width: 600px) {
+    .proceed-button {
+        font-size: 20px;
+        margin-top: 0px;
+    }
 }
 
-.proceed-button::after {
-    content: attr(data-text);
-    position: absolute;
-    left: 2px;
-    text-shadow: -5px 0 lightgreen;
-    overflow: hidden;
-    top: 0;
-    animation:
-        noise-2 3s linear infinite alternate-reverse,
-        glitch 5s 5s infinite;
+@keyframes fudge {
+    from {
+        transform: translate(0px, 0px);
+    }
+    to {
+        transform: translate(0px, 2%);
+    }
 }
 
 @keyframes glitch {
@@ -93,6 +84,15 @@ export default defineComponent({
             $bottom: math.random(101 - $top);
             clip-path: inset(#{$top}px 0 #{$bottom}px 0);
         }
+    }
+}
+
+@keyframes fudge {
+    from {
+        transform: translate(0px, 0px);
+    }
+    to {
+        transform: translate(0px, 2%);
     }
 }
 

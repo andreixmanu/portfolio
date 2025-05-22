@@ -47,7 +47,7 @@ export default defineComponent({
         1000,
       ); // Create a new camera
       const renderer = new THREE.WebGLRenderer(); // Create a new WebGL renderer
-
+      renderer.setPixelRatio(window.devicePixelRatio);
       renderer.setSize(window.innerWidth, window.innerHeight);
       threeCanvas.value.appendChild(renderer.domElement);
 
@@ -68,9 +68,15 @@ export default defineComponent({
       const wireframeSphere = new THREE.Mesh(geometry, material);
       scene.add(wireframeSphere);
 
-      camera.position.z = 7; // Set the camera's position to a distance of 8 units from the origin
-      camera.position.x = -8; // Move the camera to the left
-      camera.position.y = 1; // Move the camera up
+      // Center the sphere on mobile devices
+      if (window.innerWidth < 600) {
+        camera.position.x = -6;
+        camera.position.y = 0;
+      } else {
+        camera.position.x = -8;
+        camera.position.y = 1;
+      }
+      camera.position.z = 7;
 
       // Animation loop
       const animate = (time: number) => {
