@@ -55,10 +55,14 @@ export default {
         // Store module reference
         wasmModule = module;
         isInitialized.value = true;
-      } catch (e) {
-        console.error("WASM initialization error:", e);
-        console.error("Error stack:", e.stack);
-        error.value = `Failed to initialize decryption module: ${e.message}`;
+      } catch (e: unknown) {
+        if (e instanceof Error) {
+          console.error("WASM initialization error:", e);
+          console.error("Error stack:", e.stack);
+          error.value = `Failed to initialize decryption module: ${e.message}`;
+        } else {
+          error.value = "Failed to initialize decryption module";
+        }
         isInitialized.value = false;
       }
     };
@@ -102,9 +106,13 @@ export default {
         } else {
           error.value = "That's not the right key. Try again!";
         }
-      } catch (e) {
+      } catch (e: unknown) {
         console.error("Decryption error:", e);
-        error.value = `An error occurred while decrypting: ${e.message}`;
+        if (e instanceof Error) {
+          error.value = `An error occurred while decrypting: ${e.message}`;
+        } else {
+          error.value = "An error occurred while decrypting";
+        }
         isCorrect.value = false;
         decryptedMessage.value = "";
       }
@@ -132,7 +140,6 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
   min-height: 500px;
-  width: max-content;
 }
 
 .error-message {
@@ -231,6 +238,18 @@ export default {
 .decrypt-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  #title{
+    font-size: 10vw;
+  }
+
+  #error-message {
+    font-size: 6vw;
+  }
+  
+  
 }
 
 </style>

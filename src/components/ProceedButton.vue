@@ -38,6 +38,7 @@ export default defineComponent({
     font-size: 30px;
     margin-top: 10px;
     animation: glitch 2.5s infinite;
+    cursor: pointer;
 }
 
 @media (max-width: 600px) {
