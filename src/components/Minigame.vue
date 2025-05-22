@@ -15,7 +15,7 @@
       {{ isInitialized ? 'Decrypt' : 'Loading...' }}
     </button>
     <template v-if="error">
-      <p class="text" style="color: red">{{ error }}</p>
+      <p id="error-message" class="text" style="color: red">{{ error }}</p>
     </template>
   </div>
 </template>
@@ -142,21 +142,14 @@ export default {
   min-height: 500px;
 }
 
-.error-message {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-}
-
 .text {
   font-size: 2em;
   font-family: 'JetBrains Mono', monospace;
-  font-weight: 350;
+  font-weight: 400;
   margin: 20px;
   text-align: center;
   color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
 }
 
 #title{
@@ -164,6 +157,8 @@ export default {
   margin: 20px;
   text-align: center;
   color: white;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+  font-weight: 500;
 }
 
 #message {
@@ -175,6 +170,8 @@ export default {
   border-radius: 5px;
   padding: 10px;
   border: 2px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  font-weight: 500;
 }
 
 .number-input {
@@ -233,6 +230,9 @@ export default {
   color: white;
   border-radius: 5px;
   border: 2px solid rgba(255, 255, 255, 0.5);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  font-weight: 500;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .decrypt-button:disabled {
@@ -240,16 +240,49 @@ export default {
   cursor: not-allowed;
 }
 
+.decrypt-button:hover:not(:disabled) {
+  background-color: rgba(40, 40, 40, 0.9);
+  transform: translateY(-2px);
+}
+
+.decrypt-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
 @media (max-width: 600px) {
   #title{
     font-size: 10vw;
+    margin: 15px 10px;
+    word-wrap: break-word;
+    line-height: 1.2;
   }
 
-  #error-message {
-    font-size: 6vw;
+  .text {
+    font-size: 1.6em;
+    margin: 15px 10px;
   }
-  
-  
+
+  #message {
+    width: 80%;
+    max-width: 300px;
+  }
+
+  #error-message{
+    font-size: 5vw;
+    padding: 0 10px;
+    word-wrap: break-word;
+  }
+
+  .decrypt-button {
+    width: 80%;
+    max-width: 300px;
+  }
+}
+
+@media (min-width: 600px) {
+  #minigame-container{
+    width: max-content;
+  }
 }
 
 </style>

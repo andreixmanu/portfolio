@@ -48,12 +48,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-#title-container {
-  display: flex;
-  align-items: center;
-  position: relative;
-}
-
 #title {
   color: whitesmoke;
   position: relative;
@@ -81,7 +75,6 @@ export default defineComponent({
   #title-container {
     justify-content: flex-start;
     text-align: left;
-    margin-left: 5vw;
   }
   #title {
     text-align: left;

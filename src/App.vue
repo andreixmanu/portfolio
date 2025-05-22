@@ -122,9 +122,12 @@ body {
 }
 
 @media (max-width: 600px) {
+  .text-container {
+    margin-top: -10vh;
+  }
+
   .proceed-button {
-    left: 15%;
-    top: 65%;
+    left: 10%;
   }
 }
 

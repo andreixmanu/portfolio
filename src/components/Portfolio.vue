@@ -75,9 +75,22 @@ export default defineComponent({
 
 <style scoped>
 #portfolio {
-  max-width: max-content;
+  max-width: 100vw;
+  width: 100%;
   margin: 0 auto;
   font-family: "JetBrains Mono", monospace;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 100vh;
+  padding: 1rem;
+}
+
+.text-shadow {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 #pfp {
@@ -105,6 +118,8 @@ export default defineComponent({
   border-image: linear-gradient(45deg, #4ecdc4, #ff6b6b) 1;
   border-radius: 15px;
   width: 55%;
+  min-width: 300px;
+  box-sizing: border-box;
 }
 
 .contact-content {
@@ -112,7 +127,8 @@ export default defineComponent({
   padding: 2rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border: 3px solid transparent;
-  width: 45%;
+  width: 40%;
+  min-width: 300px;
   backdrop-filter: blur(10px);
   border-image: linear-gradient(45deg, #4ecdc4, #ff6b6b) 1;
 }
@@ -125,17 +141,21 @@ h1 {
   background-clip: text;
   color: transparent;
   text-align: center;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
 }
 
 h2 {
   font-size: 1.8rem;
   margin-bottom: 1.5rem;
   color: #4ecdc4;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
 
 .description {
   font-size: 1.1rem;
   line-height: 1.6;
+  font-weight: 500;
 }
 
 .features {
@@ -173,9 +193,11 @@ ul {
 li {
   margin: 1rem 0;
   padding: 0.5rem 1rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.3);
   border-radius: 8px;
   transition: transform 0.2s ease;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
 
 li:hover {
@@ -185,9 +207,11 @@ li:hover {
 .tech-note {
   margin-top: 3rem;
   padding: 1rem;
-  background: rgba(255, 99, 71, 0.1);
+  background: rgba(255, 99, 71, 0.15);
   border-radius: 8px;
   border-left: 3px solid #ff6b6b;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
 
 .fade-enter-active, .fade-leave-active {
@@ -242,10 +266,12 @@ li:hover {
   text-align: center;
 }
 
-#long-desc{
+#long-desc {
   font-family: "JetBrains Mono", monospace;
   font-size: 22px;
   line-height: 1.4;
+  font-weight: 500;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 .social-media-list{
@@ -271,13 +297,82 @@ li:hover {
   text-shadow: 0 0 5px #00ffff;
 }
 
-@media (max-width: 768px) {
-  .features {
-    grid-template-columns: 1fr;
+@media (max-width: 992px) {
+  .portfolio-container {
+    gap: 1rem;
   }
   
+  .contact-content {
+    width: 45%;
+  }
+  
+  .portfolio-content {
+    width: 50%;
+  }
+}
+
+@media (max-width: 768px) {
+  .portfolio-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .contact-content,
+  .portfolio-content {
+    width: 100%;
+    max-width: 600px;
+  }
+}
+
+@media (max-width: 600px) {
   #portfolio {
-    padding: 1rem;
+    height: auto;
+    padding: 2rem 1rem 5rem 1rem;
+    min-height: 100vh;
+    display: block;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+  
+  .contact-content {
+    box-sizing: border-box;
+    margin-bottom: 2rem;
+  }
+  
+  .contact-header {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 0.5rem;
+  }
+  
+  .portfolio-content {
+    margin-bottom: 3rem;
+    border: 3px solid transparent;
+    border-image: linear-gradient(45deg, #4ecdc4, #ff6b6b) 1;
+  }
+  
+  .tech-note {
+    margin-bottom: 2rem;
+    margin-top: 0;
+  }
+  
+  #title {
+    padding-left: 0;
+    font-size: 1.9rem;
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+  
+  #long-desc {
+    font-size: 18px;
+    line-height: 1.5;
+    letter-spacing: 0.2px;
+  }
+  
+  h1, h2 {
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.8));
   }
 }
 
